@@ -1,74 +1,3 @@
-Install pre-built version Manual Github llama.cpp
-Kelebihan:
-Paling fleksibel dan up-to-date — kamu compile langsung dari GitHub resmi.
-Mendapatkan semua binary CLI (termasuk main, server, dll).
-Bisa aktifkan/disable fitur seperti:
-LLAMA_CUBLAS=on (untuk GPU NVIDIA),
-LLAMA_CURL=on/off (fitur Hugging Face),
-GGML_METAL=on (untuk Mac M1/M2 GPU).
-Bisa modifikasi kode sumber jika diperlukan.
-
-Fitur
-Nama Flag
-Nilai Bawaan
-Keterangan Singkat
- Build mode
-CMAKE_BUILD_TYPE
-Release
-Jadi kode dibuild dalam mode optimal (bukan debug)
-Libcurl HuggingFace
-LLAMA_CURL
-ON
-Akan aktif, tapi akan error kalau libcurl belum diinstall
-Build tools CLI
-LLAMA_BUILD_TOOLS
-ON (jika standalone)
-Akan membangun tools CLI (seperti main, quantize, dll)
-Contoh-contoh (examples)
-LLAMA_BUILD_EXAMPLES
-ON
-Akan membangun contoh kode seperti chat, embedding, dll
- Build llama-server
-LLAMA_BUILD_SERVER
-ON (jika standalone)
-Bangun file server (Web API REST)
-CUDA support (GPU NVIDIA)
-GGML_CUDA
-OFF
-Tidak aktif, harus diaktifkan manual (-DGGML_CUDA=ON)
-Metal (Mac GPU M1/M2)
-GGML_METAL
-OFF
-Harus diaktifkan manual (-DGGML_METAL=ON)
-
-
-custom
-openai@openai:~/llama/llama.cpp$ nano CMakeLists.txt
-
-GPU NVIDIA (CUDA via cuBLAS)
-
-openai@openai:~/llama/llama.cpp$ cmake -DGGML_CUDA=ON ..
-GPU Mac M1/M2 (Apple Metal)
-openai@openai:~/llama/llama.cpp$ cmake -DGGML_METAL=ON ..
- Hilangkan download dari internet (libcurl)
-
-openai@openai:~/llama/llama.cpp$ cmake -DLLAMA_CURL=OFF ..
-Kalau kamu mau semua aktif:
-openai@openai:~/llama/llama.cpp$ cmake -DGGML_CUDA=ON -DLLAMA_CURL=ON -DLLAMA_BUILD_SERVER=ON ..
-aktifkan server HTTP (seperti llama-server) dengan:
--DLLAMA_BUILD_SERVER=ON
-Dan untuk alat bantu lainnya:
--DLLAMA_BUILD_TOOLS=ON
--DLLAMA_BUILD_EXAMPLES=ON
-
-
- Contoh lengkap untuk NVIDIA GPU:
-
-cmake -DGGML_CUDA=ON -DLLAMA_CURL=ON -DLLAMA_BUILD_SERVER=ON -DLLAMA_BUILD_EXAMPLES=ON -DLLAMA_BUILD_TOOLS=ON ..
-cmake --build . --config Release
-
-
-
 openai@openai:~/llama$ git clone https://github.com/ggml-org/llama.cpp.git
 openai@openai:~/llama$ cd llama.cpp
 openai@openai:~/llama/llama.cpp$ sudo apt install cmake build-essential libstdc++-12-dev
@@ -108,40 +37,29 @@ openai@openai:~/llama/llama.cpp/build$ cmake --build . --target llama-server -j
 [ 96%] Built target common
 [100%] Built target llama-server
 
-
 menjalankan llama server
 openai@openai:~/llama/llama.cpp/build$ ./bin/llama-server -hf ggml-org/SmolVLM-500M-Instruct-GGUF
 
 testing di comman
 openai@openai:~/llama/llama.cpp/build$ ./bin/llama-cli   --hf-repo ggml-org/gemma-3-1b-it-GGUF   --hf-file gemma-3-1b-it-Q4_K_M.gguf   -p "Apa itu kecerdasan buatan?"   -n 200
 
-
 Tambahkan ke PATH agar bisa di akses di mana saja
 openai@openai:~/llama/llama.cpp/build$ export PATH=$PATH:/home/openai/llama/llama.cpp/build/bin
-
-
-
 
 # simple usage with CLI
 llama-mtmd-cli -hf ggml-org/gemma-3-4b-it-GGUF
 
-
 # simple usage with server
 llama-server -hf ggml-org/gemma-3-4b-it-GGUF
 
-
 # using local file
 llama-server -m gemma-3-4b-it-Q4_K_M.gguf --mmproj mmproj-gemma-3-4b-it-Q4_K_M.gguf  --host 0.0.0.0 --port 8071
-
-
-
 
 # no GPU offload
 llama-server -hf ggml-org/gemma-3-4b-it-GGUF --no-mmproj-offload  --host 0.0.0.0 --port 8071
 
 # Use a local model file
 llama-cli -m my_model.gguf
-
 
 # Or download and run a model directly from Hugging Face
 llama-cli -hf ggml-org/gemma-3-1b-it-GGUF
