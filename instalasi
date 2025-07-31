@@ -47,23 +47,23 @@ Tambahkan ke PATH agar bisa di akses di mana saja
 openai@openai:~/llama/llama.cpp/build$ export PATH=$PATH:/home/openai/llama/llama.cpp/build/bin
 
 # simple usage with CLI
-llama-mtmd-cli -hf ggml-org/gemma-3-4b-it-GGUF
+openai@openai:~/llama$ llama-mtmd-cli -hf ggml-org/gemma-3-4b-it-GGUF
 
 # simple usage with server
-llama-server -hf ggml-org/gemma-3-4b-it-GGUF
+openai@openai:~/llama$ llama-server -hf ggml-org/gemma-3-4b-it-GGUF
 
 # using local file
-llama-server -m gemma-3-4b-it-Q4_K_M.gguf --mmproj mmproj-gemma-3-4b-it-Q4_K_M.gguf  --host 0.0.0.0 --port 8071
+openai@openai:~/llama$ llama-server -m gemma-3-4b-it-Q4_K_M.gguf --mmproj mmproj-gemma-3-4b-it-Q4_K_M.gguf  --host 0.0.0.0 --port 8071
 
 # no GPU offload
-llama-server -hf ggml-org/gemma-3-4b-it-GGUF --no-mmproj-offload  --host 0.0.0.0 --port 8071
+openai@openai:~/llama$ llama-server -hf ggml-org/gemma-3-4b-it-GGUF --no-mmproj-offload  --host 0.0.0.0 --port 8071
 
 # Use a local model file
-llama-cli -m my_model.gguf
+openai@openai:~/llama$ llama-cli -m my_model.gguf
 
 # Or download and run a model directly from Hugging Face
-llama-cli -hf ggml-org/gemma-3-1b-it-GGUF
+openai@openai:~/llama$ llama-cli -hf ggml-org/gemma-3-1b-it-GGUF
 
 
 # Launch OpenAI-compatible API server
-llama-server -hf ggml-org/gemma-3-1b-it-GGUF
+openai@openai:~/llama$ llama-server -hf ggml-org/gemma-3-1b-it-GGUF
